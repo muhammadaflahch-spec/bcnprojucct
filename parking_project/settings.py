@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+IS_VERCEL = os.environ.get('VERCEL') == '1'
 DEBUG = os.environ.get('DJANGO_DEBUG', '1') == '1'
 DEMO_MODE = os.environ.get('PARKWISE_DEMO_MODE', '1' if DEBUG else '0') == '1'
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'parkwise-local-prototype-only-change-before-deployment')
@@ -46,7 +47,7 @@ TEMPLATES = [{
 WSGI_APPLICATION = 'parking_project.wsgi.application'
 DATABASES = {'default': {
     'ENGINE': 'django.db.backends.sqlite3',
-    'NAME': os.environ.get('PARKWISE_DB_PATH', str(BASE_DIR / 'db.sqlite3')),
+    'NAME': os.environ.get('PARKWISE_DB_PATH', '/tmp/parkwise.sqlite3' if IS_VERCEL else str(BASE_DIR / 'db.sqlite3')),
     'OPTIONS': {'timeout': 20},
     'TEST': {'NAME': BASE_DIR / 'test_db.sqlite3'},
 }}
