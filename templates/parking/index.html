@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#176b4d">
+  <meta name="description" content="Search a mall, theatre, restaurant, college or hospital near you, see which parking slots are free, and book one before you arrive. Parkwise — smart parking slot booking.">
+  <title>Parkwise — Find parking at any place</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23176b4d'/%3E%3Cpath d='M24 47V17h12a10 10 0 0 1 0 20h-5v10zm7-17h5a3 3 0 0 0 0-6h-5z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="{% static 'parking/css/styles.css' %}?v={{ static_version }}">
+  <script>window.PARKWISE_PAGE = "{{ page }}"; window.PARKWISE_DEMO = {{ demo_mode|yesno:"true,false" }}; window.PARKWISE_SLUG = "{{ place_slug|escapejs }}";</script>
+  <script src="{% static 'parking/js/app.js' %}?v={{ static_version }}" defer></script>
+</head>
+<body>
+<svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-13 4h2m4 0h2m-8 3h2"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="m5 10 2-6h10l2 6M4 10h16a1 1 0 0 1 1 1v6H3v-6a1 1 0 0 1 1-1Zm1 7v3m14-3v3M6 13h2m8 0h2M2 9h3m14 0h3"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+  <symbol id="i-up-right" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4m.1 3h.01"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z"/><path d="m8 12 3 3 5-6"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><rect x="7" y="4" width="4" height="6" rx="1" fill="currentColor" stroke="none"/><rect x="14" y="14" width="4" height="6" rx="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 3C10 2 3 7 5 14s15 6 15-11ZM4 21 15 10"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z"/></symbol>
+  <symbol id="i-bike" viewBox="0 0 24 24"><circle cx="5" cy="17" r="4"/><circle cx="19" cy="17" r="4"/><path d="m5 17 5-9 5 9H5m10 0 3-12h-3M8 8h5"/></symbol>
+  <symbol id="i-access" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"/><path d="m11 8 1 7h6l3 6m-9-10h6M8 11a6 6 0 1 0 8 8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 8a8 8 0 0 0-14-3L3 8m0-5v5h5M4 16a8 8 0 0 0 14 3l3-3m0 5v-5h-5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 4H4v16h6m4-12 4 4-4 4m-5-4h12"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V5l8-3v19M12 8h8v13M2 21h20M8 7v1m0 3v1m0 3v1m8-4h1m-1 4h1M8 21v-2"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 5h18v5a2 2 0 0 0 0 4v5H3v-5a2 2 0 0 0 0-4V5Zm12 0v2m0 3v2m0 3v2m0 2v-1"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4m-4 5v2"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.5l6.1-.9Z"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24"><path d="M3 9h18v11H3V9Zm0 0 2-5h14l2 5M9 20v-6h6v6"/><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M7 4.5v15m10-15v15M2.5 12h19M2.5 8.2h4.5M2.5 15.8h4.5M17 8.2h4.5M17 15.8h4.5"/></symbol>
+  <symbol id="i-food" viewBox="0 0 24 24"><path d="M7 3v7a2 2 0 0 1-4 0V3m2 7v11M17 3c-2 2-2 5-2 7h4c0-2 0-5-2-7Zm0 7v11"/></symbol>
+  <symbol id="i-graduation" viewBox="0 0 24 24"><path d="m2 8 10-4 10 4-10 4L2 8Zm3 3v5c0 1.7 3 3.5 7 3.5s7-1.8 7-3.5v-5M22 8v6"/></symbol>
+  <symbol id="i-medical" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></symbol>
+  <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></symbol>
+  <symbol id="i-stadium" viewBox="0 0 24 24"><ellipse cx="12" cy="9" rx="9" ry="4"/><path d="M3 9v6c0 2.2 4 4 9 4s9-1.8 9-4V9M12 13v6"/></symbol>
+  <symbol id="i-navigate" viewBox="0 0 24 24"><path d="m3 11 18-8-8 18-2-8-8-2Z"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm9 9-9 5-9-5m18 4-9 5-9-5"/></symbol>
+</defs></svg>
+
+<div class="sidebar-scrim" id="sidebar-scrim"></div>
+<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+  <a class="brand" href="/" data-nav="dashboard" aria-label="Parkwise home"><span class="brand-mark">P<span></span></span><span>parkwise<span class="brand-dot">.</span><small>PARKING AT ANY PLACE</small></span></a>
+  <div class="workspace-label">YOUR WORKSPACE</div>
+  <nav class="main-nav">
+    <a href="/" class="nav-item {% if page == 'dashboard' or page == 'place' %}active{% endif %}" data-nav="dashboard" aria-label="Discover places"><svg class="icon"><use href="#i-search"/></svg><span>Find parking</span><span class="nav-active-dot"></span></a>
+    <a href="/bookings/" class="nav-item {% if page == 'bookings' %}active{% endif %}" data-nav="bookings" aria-label="My bookings"><svg class="icon"><use href="#i-calendar"/></svg><span>My bookings</span><span class="nav-count" id="booking-count">0</span></a>
+    <button class="nav-item" data-action="guide" aria-label="How it works"><svg class="icon"><use href="#i-help"/></svg><span>How it works</span><svg class="icon nav-end"><use href="#i-up-right"/></svg></button>
+  </nav>
+  <div class="nav-divider"></div>
+  <div class="workspace-label">VENUE MANAGEMENT</div>
+  <nav class="main-nav"><a href="/admin-panel/" class="nav-item {% if page == 'admin' %}active{% endif %}" data-nav="admin" aria-label="Admin console"><svg class="icon"><use href="#i-settings"/></svg><span>Admin console</span><svg class="icon nav-end"><use href="#i-lock"/></svg></a></nav>
+  <div class="sidebar-bottom">
+    <div class="campus-note"><span class="campus-note-icon"><svg class="icon"><use href="#i-leaf"/></svg></span><h3>Know before<br>you go.</h3><p>Live slot counts at<br>the places you visit.</p><button data-action="about">Meet the project <svg class="icon"><use href="#i-up-right"/></svg></button><div class="note-decoration" aria-hidden="true"><span></span><span></span><span></span></div></div>
+    <button class="nav-item support-link" data-action="help" aria-label="Help and information"><svg class="icon"><use href="#i-help"/></svg><span>Help &amp; information</span></button>
+    <button class="profile-button" id="profile-button" data-action="profile" aria-label="Your account"><span class="avatar" id="profile-avatar">G</span><span class="profile-text"><strong id="profile-name">Guest driver</strong><small id="profile-caption">Sign in to get started</small></span><svg class="icon"><use href="#i-chevron"/></svg></button>
+  </div>
+</aside>
+
+<div class="app-shell">
+  <header class="topbar">
+    <div class="breadcrumb"><button class="icon-button mobile-menu" data-action="menu" aria-label="Open navigation"><svg class="icon"><use href="#i-menu"/></svg></button><span>Workspace</span><svg class="icon"><use href="#i-chevron"/></svg><strong id="breadcrumb-current">Find parking</strong></div>
+    <div class="topbar-actions"><button class="campus-pill" data-action="locate" id="location-pill"><span class="status-dot"></span><span id="location-label">Near Kochi</span><svg class="icon"><use href="#i-navigate"/></svg></button><span class="topbar-divider"></span><button class="icon-button" data-action="help" aria-label="Help and information"><svg class="icon"><use href="#i-help"/></svg></button><button class="avatar avatar-small" id="top-avatar" data-action="profile" aria-label="Your account">G</button></div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ==================== DISCOVER ==================== -->
+    <section id="page-dashboard" class="page {% if page != 'dashboard' %}hidden{% endif %}" aria-labelledby="dashboard-heading">
+      <div class="page-heading dashboard-heading">
+        <div>
+          <div class="eyebrow"><span class="tiny-line"></span> PARK SMARTER, ANYWHERE YOU GO</div>
+          <h1 id="dashboard-heading">Search a place.<br>Arrive to a free spot<span class="green-text">.</span></h1>
+          <p>Malls, theatres, restaurants, colleges and hospitals near you — see the real slot count before you drive.</p>
+        </div>
+        <button class="button button-white heading-guide" data-action="guide" aria-label="How Parkwise works"><svg class="icon"><use href="#i-help"/></svg>How it works<svg class="icon small"><use href="#i-up-right"/></svg></button>
+      </div>
+
+      <form class="search-shell" id="search-form" role="search" autocomplete="off" action="/" onsubmit="return false">
+        <label class="search-input" for="place-search">
+          <svg class="icon"><use href="#i-search"/></svg>
+          <input id="place-search" name="q" type="search" placeholder="Search a mall, theatre, restaurant, college, hospital…" aria-label="Search for a place" maxlength="80">
+          <button type="button" class="clear-search hidden" id="clear-search" data-action="clear-search" aria-label="Clear search"><svg class="icon"><use href="#i-close"/></svg></button>
+        </label>
+        <button class="button button-primary search-submit" type="submit"><svg class="icon"><use href="#i-search"/></svg>Search parking</button>
+      </form>
+
+      <div class="chip-row" id="category-chips" role="group" aria-label="Filter by place type"></div>
+
+      <div class="when-bar">
+        <div class="when-fields">
+          <label class="when-field"><svg class="icon"><use href="#i-calendar"/></svg><span><small>ARRIVAL DATE</small><input id="search-date" type="date" aria-label="Arrival date"></span></label>
+          <label class="when-field"><svg class="icon"><use href="#i-clock"/></svg><span><small>ARRIVAL TIME</small><input id="search-time" type="time" aria-label="Arrival time"></span></label>
+          <label class="when-field"><svg class="icon"><use href="#i-refresh"/></svg><span><small>STAY LENGTH</small><select id="search-duration" aria-label="Parking duration"><option value="1">1 hour</option><option value="2" selected>2 hours</option><option value="3">3 hours</option><option value="4">4 hours</option><option value="8">8 hours</option></select></span></label>
+        </div>
+        <div class="when-actions">
+          <label class="sort-field"><span>SORT</span><select id="sort-select" aria-label="Sort places"><option value="nearby">Nearest first</option><option value="availability">Most slots free</option><option value="price">Lowest price</option><option value="rating">Top rated</option></select></label>
+          <button class="refresh-button icon-button" type="button" data-action="refresh-places" aria-label="Refresh availability"><svg class="icon"><use href="#i-refresh"/></svg></button>
+        </div>
+      </div>
+
+      <div class="results-head">
+        <div>
+          <h2 id="results-title">Places near you</h2>
+          <p class="results-sub" id="results-sub">Live slot counts for your arrival time.</p>
+        </div>
+        <span class="results-meta" id="results-meta"><span class="status-dot"></span><span id="map-updated">Checking availability…</span></span>
+      </div>
+      <div id="place-grid" class="place-grid" aria-live="polite"><div class="place-skeleton"></div><div class="place-skeleton"></div><div class="place-skeleton"></div></div>
+      <div class="discover-footer"><span><svg class="icon"><use href="#i-shield"/></svg>Slot counts come from real reservations, refreshed every 20 seconds.</span><button data-action="about">A BCN project, built for better arrivals <svg class="icon"><use href="#i-up-right"/></svg></button></div>
+    </section>
+
+    <!-- ==================== PLACE ==================== -->
+    <section id="page-place" class="page {% if page != 'place' %}hidden{% endif %}" aria-labelledby="place-heading">
+      <div class="place-crumbs"><a href="/" data-nav="dashboard" class="crumb-link"><svg class="icon"><use href="#i-arrow"/></svg>All places</a><span class="crumb-label" id="crumb-place">Loading…</span></div>
+      <div id="place-hero"></div>
+      <div class="parking-layout">
+        <section class="card parking-card">
+          <div class="card-heading"><div><h2><svg class="icon"><use href="#i-grid"/></svg><span id="lot-title">Parking lots</span></h2><p id="lot-subtitle">Choose a green slot for your visit.</p></div><span class="live-label" id="live-label"><span class="status-dot"></span>LIVE</span></div>
+          <div class="map-toolbar">
+            <div class="segmented zone-tabs" role="group" aria-label="Filter by lot"><button class="active" data-lot="all">All lots</button><button data-lot="A">A</button><button data-lot="B">B</button><button data-lot="C">C</button></div>
+            <label class="vehicle-filter"><span>Vehicle</span><select id="vehicle-filter" aria-label="Filter by vehicle type"><option value="all">Any vehicle</option><option value="car">Car</option><option value="bike">Two-wheeler</option><option value="ev">Electric</option><option value="accessible">Accessible</option></select></label>
+          </div>
+          <div class="map-legend"><span><i class="legend-dot available"></i>Free</span><span><i class="legend-dot booked"></i>Reserved</span><span><i class="legend-dot occupied"></i>Occupied</span><span><i class="legend-dot unavailable"></i>Closed</span></div>
+          <div class="map-scroll" tabindex="0" role="region" aria-label="Parking map; scroll horizontally on small screens"><div class="parking-map" id="parking-map">
+            <div class="map-building"><svg class="icon"><use href="#i-building"/></svg><span id="map-building-label">THE VENUE</span><span class="building-walk" id="map-building-walk">Walk times shown per lot</span></div>
+            <div id="map-zones" class="map-zones"><div class="map-loading"><span class="spinner"></span>Loading parking…</div></div>
+            <div class="map-entry"><span><svg class="icon"><use href="#i-arrow"/></svg>ENTRY</span><div class="road-markings"></div><span>EXIT<svg class="icon"><use href="#i-arrow"/></svg></span></div>
+          </div></div>
+          <div class="map-mobile-hint"><svg class="icon"><use href="#i-arrow"/></svg>Swipe the map to see every lot</div>
+          <div class="map-footer"><span><svg class="icon"><use href="#i-info"/></svg>Green means no overlapping reservation. This prototype has no physical sensors.</span><span id="map-places-link">Free parking count updates live</span></div>
+          <button class="button button-primary mobile-reserve-link hidden" id="mobile-reserve-link" data-action="reservation">Continue</button>
+        </section>
+
+        <aside class="reservation-card">
+          <div class="reservation-header"><h2>Reserve your slot</h2><span class="step-chip">STEP 2</span></div>
+          <div class="selected-slot-summary empty" id="selected-slot-summary"><svg class="icon"><use href="#i-pin"/></svg><span>Your next spot is waiting.<br>Select an available slot on the map.</span></div>
+          <form id="booking-form" novalidate action="#" onsubmit="return false">
+            <div class="form-row">
+              <div class="form-field"><label for="booking-date">Arrival date</label><div class="input-with-icon"><svg class="icon"><use href="#i-calendar"/></svg><input id="booking-date" type="date" required></div></div>
+              <div class="form-field"><label for="booking-time">Arrival time</label><div class="input-with-icon"><svg class="icon"><use href="#i-clock"/></svg><input id="booking-time" type="time" required></div></div>
+            </div>
+            <div class="form-field"><label for="booking-duration">How long will you stay?</label><select id="booking-duration" required><option value="1">1 hour</option><option value="2" selected>2 hours</option><option value="3">3 hours</option><option value="4">4 hours</option><option value="8">8 hours</option></select><p class="field-hint" id="duration-hint">Pick a stay that ends before the venue closes.</p></div>
+            <div class="form-field"><label for="vehicle-plate">Vehicle number</label><div class="input-with-icon"><svg class="icon"><use href="#i-car"/></svg><input id="vehicle-plate" placeholder="KL 07 AB 1234" maxlength="20" required></div><p class="field-hint" id="vehicle-type-hint">Select a slot to see its vehicle type.</p></div>
+            <div class="reservation-divider"></div>
+            <div class="price-row"><span>Parking fee<small id="price-note">Per hour, as set by the venue</small></span><strong id="price-total">₹0<span id="price-detail">—</span></strong></div>
+            <button class="button button-primary book-button" type="submit" id="book-button" disabled><span>Select a parking slot</span><svg class="icon"><use href="#i-arrow"/></svg></button>
+            <div class="inline-error hidden" id="booking-error" role="alert"></div>
+            <p class="secure-note"><svg class="icon"><use href="#i-shield"/></svg>No payment is taken in this prototype.</p>
+          </form>
+          <div class="flexibility-note"><strong>Plans changed?</strong><p>Cancel free of charge any time before your arrival, and the slot returns to the pool.</p></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== BOOKINGS ==================== -->
+    <section id="page-bookings" class="page {% if page != 'bookings' %}hidden{% endif %}" aria-labelledby="bookings-heading">
+      <div class="page-heading"><div><div class="eyebrow"><span class="tiny-line"></span> EVERY PLACE, ONE LIST</div><h1 id="bookings-heading">Good visits start with a slot<span class="green-text">.</span></h1><p>All your parking reservations, whichever place you're visiting.</p></div><button class="button button-primary" data-nav="dashboard"><svg class="icon"><use href="#i-search"/></svg>Find parking</button></div>
+      <div id="bookings-content"></div>
+    </section>
+
+    <!-- ==================== ADMIN ==================== -->
+    <section id="page-admin" class="page {% if page != 'admin' %}hidden{% endif %}" aria-labelledby="admin-heading">
+      <div class="page-heading"><div><div class="eyebrow"><span class="tiny-line"></span> VENUE MANAGEMENT</div><h1 id="admin-heading">Every lot in its place<span class="green-text">.</span></h1><p>Places, parking slots and reservations across the network.</p></div><button class="button button-white" id="admin-export" data-action="export"><svg class="icon"><use href="#i-download"/></svg>Export CSV</button></div>
+      <div id="admin-content"></div>
+    </section>
+
+    <!-- ==================== NOT FOUND ==================== -->
+    <section id="page-notfound" class="page {% if page != 'notfound' %}hidden{% endif %}" aria-labelledby="notfound-heading">
+      <div class="empty-state"><span class="empty-state-icon"><svg class="icon"><use href="#i-pin"/></svg></span><h2 id="notfound-heading">We couldn't find that place.</h2><p>The venue may have been removed, or the link is out of date. Search again to see every place taking reservations.</p><button class="button button-primary" data-nav="dashboard">Search all places<svg class="icon"><use href="#i-arrow"/></svg></button></div>
+    </section>
+
+  </main>
+  <footer class="app-footer"><span>© {% now "Y" %} Parkwise <i>·</i> Smart Parking Slot Booking System</span><span>Search a place <i>·</i> See free slots <i>·</i> Book before you drive</span></footer>
+</div>
+
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1"><button class="modal-close icon-button" data-action="close-modal" aria-label="Close dialog"><svg class="icon"><use href="#i-close"/></svg></button><div id="modal-content"></div></div>
+</div>
+<div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="false"></div>
+<noscript>
+  <div style="position:fixed;left:0;right:0;bottom:0;z-index:99;background:#25332e;color:#fff;padding:14px 18px;font:13px/1.5 system-ui,sans-serif;text-align:center">
+    Parkwise needs JavaScript to search places and book a slot. Please enable JavaScript for this page.
+  </div>
+</noscript>
+</body>
+</html>
